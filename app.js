@@ -90,3 +90,21 @@ app.delete('/books/:id',(req,res)=>{
         res.status(500).json({err:'its not the valid Id'})
        }
 })
+
+app.patch('/books/:id',(req,res)=>{
+  const update=req.body
+  if(ObjectId.isValid(req.params.id)){
+  db.collection('books')
+  .updateOne({_id:ObjectId(req.params.id)},{$set:update})
+  .then(result=>{
+    res.status(201).json(result)
+  })
+  .catch(err=>{
+    res.status(500).json({err:'could not connect to db'})
+  })
+
+  }
+  else{
+    res.status(500).json({err:'object id is not the valid one'})
+  }
+})
